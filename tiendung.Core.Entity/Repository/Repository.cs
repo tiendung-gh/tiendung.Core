@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using tiendung.Core.Entity.Data;
 using tiendung.Core.Entity.Entity;
@@ -10,6 +11,7 @@ namespace tiendung.Core.Entity.Repository
     {
         private DataContext _context;
         private DbSet<T> _dbSet;
+        private IMapper _mapper;
         public Repository(DataContext context)
         {
             _context = context;
@@ -43,7 +45,8 @@ namespace tiendung.Core.Entity.Repository
 
         public async Task<T> GetById(Guid id)
         {
-            return await _dbSet.FindAsync(id);
+            var data = await _dbSet.FindAsync(id);
+            return data;
         }
 
         public async Task<IEnumerable<T>> Query(Expression<Func<T, bool>> expression)
