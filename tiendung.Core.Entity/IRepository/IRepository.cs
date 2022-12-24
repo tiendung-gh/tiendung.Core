@@ -1,4 +1,5 @@
-﻿using tiendung.Core.Entity.Entity;
+﻿using System.Linq.Expressions;
+using tiendung.Core.Entity.Entity;
 
 namespace tiendung.Core.Entity.IRepository
 {
@@ -9,6 +10,10 @@ namespace tiendung.Core.Entity.IRepository
         Task Create(T entity);
         void Update(T entity);
         void Delete(T entity);
+        Task CreateMore(IEnumerable<T> entities);
+        void UpdateMore(IEnumerable<T> entities);
+        void DeleteMore(IEnumerable<T> entities);
+        Task<IQueryable<T>> Query(Expression<Func<T, bool>> expression);
         Task SaveChange();
     }
 }
