@@ -7,15 +7,16 @@ using tiendung.Core.Entity.IRepository;
 
 namespace tiendung.Core.Entity.Repository
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : BaseEntity, IAsyncDisposable
     {
-        private DataContext _context;
-        private DbSet<T> _dbSet;
-        private IMapper _mapper;
-        public Repository(DataContext context)
+        private readonly DataContext _context;
+        private readonly DbSet<T> _dbSet;
+        private readonly IMapper _mapper;
+        public Repository(DataContext context, IMapper mapper)
         {
             _context = context;
             _dbSet = context.Set<T>();
+            _mapper = mapper;
         }
 
         public async Task Create(T entity)
@@ -46,7 +47,7 @@ namespace tiendung.Core.Entity.Repository
         public async Task<T> GetById(Guid id)
         {
             var data = await _dbSet.FindAsync(id);
-            return data;
+            return _mapper.Map<T>(data);
         }
 
         public async Task<IEnumerable<T>> Query(Expression<Func<T, bool>> expression)

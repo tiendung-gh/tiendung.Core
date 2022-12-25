@@ -3,7 +3,7 @@ using tiendung.Core.Entity.Entity;
 
 namespace tiendung.Core.Entity.IRepository
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : BaseEntity, IAsyncDisposable
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(Guid id);
@@ -13,7 +13,7 @@ namespace tiendung.Core.Entity.IRepository
         Task CreateMore(IEnumerable<T> entities);
         void UpdateMore(IEnumerable<T> entities);
         void DeleteMore(IEnumerable<T> entities);
-        Task<IQueryable<T>> Query(Expression<Func<T, bool>> expression);
+        Task<IEnumerable<T>> Query(Expression<Func<T, bool>> expression);
         Task SaveChange();
     }
 }
